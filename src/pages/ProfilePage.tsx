@@ -17,6 +17,9 @@ export default function ProfilePage() {
   const user = useAppSelector((s) => s.auth.user);
   const dispatch = useAppDispatch();
   const [values, setValues] = useState<ProfileValues>(() => getSavedProfile());
+  const [savedValues, setSavedValues] = useState<ProfileValues>(() =>
+    getSavedProfile(),
+  );
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -27,6 +30,7 @@ export default function ProfilePage() {
     mockFetchProfile().then((profile) => {
       if (!active) return;
       setValues(profile);
+      setSavedValues(profile);
       setLoading(false);
     });
 
@@ -69,6 +73,7 @@ export default function ProfilePage() {
 
     try {
       await mockSaveProfile(values);
+      setSavedValues(values);
       setStatus("Профиль сохранён. Данные выведены в консоль.");
       console.log(values, "Сохраненные данные");
     } catch {
@@ -78,7 +83,7 @@ export default function ProfilePage() {
 
   return (
     <Page
-      headerUser={buildProfileDisplayName(values, user)}
+      headerUser={buildProfileDisplayName(savedValues, user)}
       onLogout={() => dispatch(logoutThunk())}
     >
       <Body

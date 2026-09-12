@@ -9,11 +9,7 @@ export function buildProfileDisplayName(
   profile: ProfileValues,
   fallback: string | null,
 ): string | null {
-  const fullName = [
-    profile["lastName"],
-    profile["firstName"],
-    profile["middleName"],
-  ]
+  const fullName = [profile["lastName"], profile["firstName"]]
     .map((value) => (typeof value === "string" ? value.trim() : ""))
     .filter(Boolean)
     .join(" ");
