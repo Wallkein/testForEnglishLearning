@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
 
 interface HeaderProps {
   user: string | null;
@@ -7,6 +8,7 @@ interface HeaderProps {
 
 export default function Header({ user, onLogout }: HeaderProps) {
   const navigate = useNavigate();
+  const authUser = useAppSelector((s) => s.auth.user);
   return (
     <header className="bg-white shadow-[0px_0px_15px_0px_#2643541A]">
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-3 py-3 sm:px-4">
@@ -29,7 +31,7 @@ export default function Header({ user, onLogout }: HeaderProps) {
           <Link className="shrink-0 hover:text-[#73C3F3]" to="/profile">
             Профиль
           </Link>
-          {user ? (
+          {user && authUser ? (
             <span className="flex min-w-0 items-center gap-2">
               <span className="max-w-32 truncate rounded-full bg-[#73C3F3] px-2 py-1 font-medium text-white sm:max-w-48 sm:px-3">
                 {user}
@@ -47,7 +49,7 @@ export default function Header({ user, onLogout }: HeaderProps) {
           ) : (
             <Link
               to="/login"
-              className="rounded bg-[#73C3F3] px-3 py-1 text-white hover:bg-indigo-700"
+              className="rounded bg-[#73C3F3] px-3 py-1 text-white hover:opacity-80"
             >
               Войти
             </Link>
